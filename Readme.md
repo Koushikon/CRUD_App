@@ -8,5 +8,7 @@
 
 1. Clean and ReBuild the Project with internet (NuGet Packages).
 2. Navigate to this project web directory in the console
-3. run this command `dotnet ef database update`
+3. Run this command: `dotnet ef database update`
 4. Run the Project
+
+![Image of App](./files/ss-1.png)
