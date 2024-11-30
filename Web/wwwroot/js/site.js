@@ -29,7 +29,7 @@ $(function () {
             }
         },
         select: {
-            style: 'os',
+            style: 'multi',
             selector: 'td:first-child'
         }
     });
