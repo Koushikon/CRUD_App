@@ -14,6 +14,7 @@ namespace Web.Controllers
             _context = context;
         }
 
+
         public IActionResult Index()
         {
             Employee empObj = new()
@@ -23,6 +24,7 @@ namespace Web.Controllers
 
             return View(empObj);
         }
+
 
         [HttpPost]
         public IActionResult Upsert(Employee model)
@@ -44,19 +46,34 @@ namespace Web.Controllers
         }
 
 
-        [HttpPost]
-        public IActionResult Delete(Employee model)
+        [HttpDelete]
+        public IActionResult Delete([FromQuery] List<int> ids)
         {
-            var employeeData = _context.Employee.Find(model.ID);
-
-            if (employeeData != null)
+            if (ids == null || ids.Count == 0)
             {
-                _context.Employee.Remove(employeeData);
+                return Json(new { success = false, message = "No IDs provided." });
             }
-            _context.SaveChanges();
 
-            return RedirectToAction("Index");
+            try
+            {
+                foreach (var id in ids)
+                {
+                    var employee = _context.Employee.Find(id);
+                    if (employee != null)
+                    {
+                        _context.Employee.Remove(employee);
+                    }
+                }
+                _context.SaveChanges();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
+
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
